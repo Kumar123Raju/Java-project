@@ -1,0 +1,181 @@
+import java.util.*;
+class student{
+	String Student_id;
+    String Name,Branch;
+    int Room_no;
+    public student(String s_id,String nm,String br,int rno){
+    	this.Student_id=s_id;
+    	this.Name=nm;
+    	this.Branch=br;
+    	this.Room_no=rno;
+    }
+}
+class project{
+	static int room_available=1;
+	static int capacity=10;
+	 //******************1. start Add student details::
+	public static void Join(HashSet<student> dt){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter Your registration no;");
+		String si=sc.next();
+		System.out.println("Enter Your Name;");
+		String nm=sc.next();
+		System.out.println("Enter Your Branch");
+		String br=sc.next();
+		student obj=new student(si,nm,br,room_available);
+		dt.add(obj);
+		room_available++;
+		capacity--;
+	}
+	public static void JoinR(HashSet<student> dt,int a){
+		Scanner sc=new Scanner(System.in);
+		System.out.println("Enter Your registration no;");
+		String si=sc.next();
+		System.out.println("Enter Your Name;");
+		String nm=sc.next();
+		System.out.println("Enter Your Branch");
+		String br=sc.next();
+		student obj=new student(si,nm,br,a);
+		dt.add(obj);
+		
+	}
+	public static void Room_search(HashSet<student> dt){
+		int i=1,flag=0;
+		for(student value:dt){
+			if(i!=value.Room_no){
+				flag++;
+				break;
+			}
+			i++;
+
+		}
+		if(capacity>0) JoinR(dt,i);
+	    else if(flag!=0){
+	    	JoinR(dt,i);
+	    }
+	    else 
+	    	System.out.println("Room is not available:");
+
+
+	}
+	//******************End add student details**************
+	//*****************2. Start Delete student details******
+	public static void delete(HashSet<student> dt,String id){
+		int flag=0;
+		student obj;
+		for(student value: dt){
+			if(id.equals(value.Student_id)){
+				obj=value;
+				dt.remove(obj);
+			    flag++;
+			    break;
+			}
+		}
+		
+		if(flag>0) System.out.println("Successfullly deleted:");
+		else System.out.println("No such Data is found");
+
+
+	}
+	//*******************End delete studdent details*****
+
+	//*******************3.Search Details of particular student***
+	public static void Search_detail(HashSet<student> dt,String id){
+		int flag=0;
+		for(student value:dt){
+			if(id.equals(value.Student_id)){
+			System.out.println("_____________________________");
+		    System.out.println("Reg. Id: "+value.Student_id);
+		    System.out.println("Name: "+value.Name);
+		    System.out.println("Branch: "+value.Branch);
+		    System.out.println("Room no: "+value.Room_no);
+		    System.out.println("_____________________________");
+		    flag++;
+		    break;
+			}
+		}
+		if(flag==0) System.out.println("No such data found: ");
+	}
+
+	//********************End search details of particular students
+	//********************4. Start Searh Room no. of particular student:
+	public static void Search_Room(HashSet<student> dt,String id){
+		int flag=0;
+		for(student value:dt){
+			if(id.equals(value.Student_id)){
+			System.out.println("_____________________________");
+		    System.out.println("Room no: "+value.Room_no);
+		    System.out.println("_____________________________");
+		    flag++;
+		    break;
+			}
+		}
+		if(flag==0) System.out.println("No such data found: ");
+
+	}
+
+	//********************End search Room no. of particular student:
+
+	//*******************5. Start student details display****
+    public static void display(HashSet<student> dt){
+    	System.out.println("***********Details of student:************");
+    	for(student val:dt){
+    		System.out.println("_____________________________");
+		    System.out.println("Reg. Id: "+val.Student_id);
+		    System.out.println("Name: "+val.Name);
+		    System.out.println("Branch: "+val.Branch);
+		    System.out.println("Room no: "+val.Room_no);
+		    System.out.println("_____________________________");
+		}
+
+    }
+    //*********************************************************
+
+	public static void main(String arg[]){
+		Scanner sc=new Scanner(System.in);
+		HashSet<student> data=new HashSet<student>(); //Use of collection
+		char choice;
+		do{
+			System.out.flush();
+			System.out.println("Welcome to Hostel J Allotment: ");
+			System.out.println("_______________________________");
+			System.out.println("1.Join new student:");
+			System.out.println("2.Leave old student:");
+			System.out.println("3.Search Detail of particular student:");
+			System.out.println("4.Search Room no. of particular student:");
+			System.out.println("5.Display all student's name of hostel J");
+			System.out.println("6.Exit");
+			int choose;
+			System.out.println("Choose operation:");
+			choose=sc.nextInt();
+			switch(choose){
+				case 1 :   if(room_available<=1)
+				                 Join(data);
+				           else
+				           	     Room_search(data);
+				           break;
+				case 2 :   System.out.println("Enter student Id");
+				           String id=sc.next();
+				           delete(data,id);
+				           break;
+				case 3 : System.out.println("Enter student Id");
+				           String ids=sc.next();
+				         Search_detail(data,ids);
+				          break;
+				case 4 : System.out.println("Enter student Id");
+				           String idss=sc.next();
+				         Search_Room(data,idss);
+				          break;
+
+				case 5 : display(data);
+				         break;
+				case 6 : System.exit(0);
+                default: System.out.println("Enter wrong!!!!!!");
+			}
+
+         
+         System.out.println("\n\n Want to perform operation:(y/n)");
+         choice=sc.next().charAt(0);
+		}while(choice!='n');
+	}
+}
